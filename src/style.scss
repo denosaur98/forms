@@ -1,0 +1,27 @@
+@font-face {
+  font-family: Roboto;
+  src: url('./assets/fonts/Roboto.ttf');
+}
+
+:root {
+  --base-black: #000;
+  --base-grey: #c2c2c2;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Roboto;
+}
+
+input, textarea {
+  outline: none;
+  resize: none;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
