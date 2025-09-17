@@ -78,7 +78,8 @@
           class="base-input"
           type="text"
           placeholder="Дата рождения:"
-          v-model="birthDate.value.value"
+          v-model="formattedBirthDate"
+          @input="handleBirthDateInput"
           :class="{ 'error': birthDate.errorMessage.value && birthDate.meta.touched }"
           @blur="birthDate.handleBlur()"
         >
@@ -118,6 +119,7 @@ interface Props {
 const props = defineProps<Props>()
 const formStore = useFormStore()
 const formattedPhone = ref('')
+const formattedBirthDate = ref('')
 
 const { handleSubmit, resetForm } = useForm({
   validationSchema: {
@@ -210,18 +212,18 @@ const login = useField('login')
 
 const isFormValid = computed(() => {
   if (props.formType === 'check') {
-    return name.meta.valid && 
-           email.meta.valid && 
-           inn.meta.valid && 
+    return name.meta.valid &&
+           email.meta.valid &&
+           inn.meta.valid &&
            phone.meta.valid &&
            name.value.value &&
            email.value.value &&
            inn.value.value &&
            phone.value.value
   } else {
-    return name.meta.valid && 
-           email.meta.valid && 
-           surname.meta.valid && 
+    return name.meta.valid &&
+           email.meta.valid &&
+           surname.meta.valid &&
            patronymic.meta.valid &&
            birthDate.meta.valid &&
            login.meta.valid &&
@@ -234,22 +236,23 @@ const isFormValid = computed(() => {
   }
 })
 
-const onSubmit = handleSubmit(async (values) => {
+const onSubmit = handleSubmit(async (values: any) => {
   try {
     await formStore.submitForm(values, props.formType)
     resetForm()
     formattedPhone.value = ''
+    formattedBirthDate.value = ''
   } catch {}
 })
 
 function handlePhoneInput(event: Event) {
   const input = event.target as HTMLInputElement
   let value = input.value.replace(/\D/g, '')
-  
+
   if (value.length > 11) {
     value = value.substring(0, 11)
   }
-  
+
   let formattedValue = ''
   if (value.length > 0) {
     formattedValue = '+7 '
@@ -266,14 +269,37 @@ function handlePhoneInput(event: Event) {
       }
     }
   }
-  
+
   formattedPhone.value = formattedValue
   phone.value.value = value
+}
+
+function handleBirthDateInput(event: Event) {
+  const input = event.target as HTMLInputElement
+  let value = input.value.replace(/\D/g, '')
+
+  if (value.length > 8) {
+    value = value.substring(0, 8)
+  }
+
+  let formattedValue = ''
+  for (let i = 0; i < value.length; i++) {
+    if (i === 2 || i === 4) {
+      formattedValue += '.' + value[i]
+    } else {
+      formattedValue += value[i]
+    }
+  }
+
+  formattedBirthDate.value = formattedValue
+
+  birthDate.value.value = formattedValue
 }
 
 watch(() => props.formType, () => {
   resetForm()
   formattedPhone.value = ''
+  formattedBirthDate.value = ''
 })
 </script>
 
