@@ -282,7 +282,7 @@ watch(() => props.formType, () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 500px;
+  width: 550px;
   height: max-content;
   gap: 25px;
 
@@ -309,7 +309,7 @@ watch(() => props.formType, () => {
       font-size: 15px;
       font-weight: 300;
       color: var(--base-black);
-      padding: 5px 15px;
+      padding: 10px 20px;
       border: 1px solid var(--base-grey);
       border-radius: 5px;
       width: 100%;
