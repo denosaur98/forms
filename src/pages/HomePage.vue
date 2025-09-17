@@ -1,11 +1,22 @@
 <template>
   <div class="home-page">
     <div class="page__action-wrapper">
-      <button class="base-button" @click="changeForm('check')">Открыть форму проверки</button>
-      <button class="base-button" @click="changeForm('auth')">Открыть форму авторизации</button>
+      <button
+        :class="formType === 'check' ? 'base-button active' : 'base-button'"
+        @click="changeForm('check')"
+      >
+        Открыть форму проверки
+      </button>
+      <button
+        :class="formType === 'auth' ? 'base-button active' : 'base-button'"
+        @click="changeForm('auth')"
+      >
+        Открыть форму авторизации
+      </button>
     </div>
     <BaseForm
       :formType="formType"
+      :key="formType"
     />
   </div>
 </template>
@@ -54,6 +65,13 @@ function changeForm(type: 'check' | 'auth') {
       border-radius: 5px;
       padding: 5px 15px;
       width: 100%;
+      transition: .5s;
+
+      &.active {
+        background: var(--base-green);
+        color: var(--base-white);
+        border: 1px solid var(--base-green);
+      }
     }
   }
 }
